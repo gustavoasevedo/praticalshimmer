@@ -1,35 +1,38 @@
 package com.dss.praticalshimmer.sample
 
 import android.os.Bundle
-import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.ConstraintLayout
 import com.dss.praticalshimmer.ShimmerConfig
 import com.dss.praticalshimmer.ShimmerRunner
+import com.dss.praticalshimmer.sample.databinding.ActivityTestBinding
 
 class TestActivity : AppCompatActivity() {
 
+    companion object{
+        private const val TEST_INTERVAL = 300
+    }
+
+    private lateinit var binding : ActivityTestBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_test)
+        binding = ActivityTestBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        val viewContainer = findViewById<ConstraintLayout>(R.id.viewContainer)
-        val btnStart = findViewById<Button>(R.id.btnStart)
-        val btnStop = findViewById<Button>(R.id.btnStop)
 
         val shimmer = ShimmerConfig()
-            .on(viewContainer)
-            .interval(300)
+            .on(binding.viewContainer)
+            .interval(TEST_INTERVAL)
             .disableClicks(false)
             .orientation(com.dss.praticalshimmer.ShimmerOrientation.Horizontal)
             .disableClicks(true)
-            .addIgnoredView(btnStop)
+            .addIgnoredView(binding.btnStop)
 
-        btnStart.setOnClickListener {
+        binding.btnStart.setOnClickListener {
             ShimmerRunner.run(shimmer)
         }
 
-        btnStop.setOnClickListener {
+        binding.btnStop.setOnClickListener {
             ShimmerRunner.stop(shimmer)
         }
     }
